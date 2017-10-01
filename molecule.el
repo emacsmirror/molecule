@@ -92,6 +92,7 @@ ee it if it's on the PATH."
 	(molecule-dir)
 	(scenarios)
 	(old-dir)
+	(rel-path)
 	(parent-dir (file-name-nondirectory (directory-file-name
 					      (file-name-directory
 					       default-directory))))
@@ -103,9 +104,12 @@ ee it if it's on the PATH."
       (setq debug ""))
     ;; See if parent-dir is member of ansible-dirs
     (if (member parent-dir ansible-dirs)
-	(setq molecule-dir "../molecule")
-      (setq molecule-dir "molecule"))
-    (message molecule-dir)
+	(progn
+	  (setq rel-path "../")
+	  (setq molecule-dir "../molecule"))
+      (progn
+	(setq rel-path "")
+	(setq molecule-dir "molecule")))
     ;; Execute only if the molecule directory exists
     (if (file-exists-p molecule-dir)
 	(progn
@@ -115,7 +119,6 @@ ee it if it's on the PATH."
 	  ;; If there's more than one scenario, give an option to choose them
 	  (if (> (length scenarios) 1)
 	      (progn
-			  	  (message "lol")
 		(setq scenarios (cons "all" scenarios))
 		(message scenarios)
 		;; TODO: hacer el ivy-read generico y reusable al menos con ido
@@ -127,7 +130,7 @@ ee it if it's on the PATH."
 	  (switch-to-buffer-other-window molecule-buffer-name-v)
 	  (switch-to-buffer-other-window bname)
 	  (setq old-dir default-directory)
-	  (setq default-directory (concat default-directory "../"))
+	  (setq default-directory (concat default-directory rel-path))
 	  (start-process molecule-buffer-name-v molecule-buffer-name-v "sh" "-c"
 			 (concat molecule-command " " debug command scenario))
 	  (setq default-directory old-dir))
