@@ -124,15 +124,8 @@ ee it if it's on the PATH."
 		;; TODO: hacer el ivy-read generico y reusable al menos con ido
 		(setq scenario (concat " -s " (ivy-read "Choose a scenario: "
 							scenarios)))))
-	  (setq bname (buffer-name))
-	  ;; Split window and change to buffer to show progress
-	  (split-window-sensibly)
-	  (switch-to-buffer-other-window molecule-buffer-name-v)
-	  (switch-to-buffer-other-window bname)
-	  (setq old-dir default-directory)
 	  (setq default-directory (concat default-directory rel-path))
-	  (start-process molecule-buffer-name-v molecule-buffer-name-v "sh" "-c"
-			 (concat molecule-command " " debug command scenario))
+	  (compile (concat molecule-command " " debug command scenario))
 	  (setq default-directory old-dir))
       (message "There's no scenarios! You should execute M-x molecule-init"))))
 
