@@ -84,50 +84,67 @@ ee it if it's on the PATH."
 		   (concat molecule-command " init " debug molecule-parameter scenario-name role-name))
     (message "Molecule finished!")))
 
+(defun molecule-basedir (directory)
+  (file-name-directory (replace-regexp-in-string
+			(concat
+			 (file-name-nondirectory
+			  (directory-file-name
+			   (file-name-directory directory)
+			   ))
+			 "/$")
+			""
+			directory)))
+
 (defun molecule--wrapper (command)
   "Molecule generic `COMMAND' wrapper."
   (let ((debug)
-	(bname)
 	(scenario)
 	(molecule-dir)
 	(scenarios)
-	(old-dir)
-	(rel-path)
-	(parent-dir (file-name-nondirectory (directory-file-name
-					      (file-name-directory
-					       default-directory))))
-	;; See if it's a typical ansible directory
-	(ansible-dirs '("defaults" "handlers" "vars" "meta" "tests" "tasks")))
+	(old-dir))
     ;; Set debug
     (if (eq molecule-debug t)
 	(setq debug "--debug ")
       (setq debug ""))
-    ;; See if parent-dir is member of ansible-dirs
-    (if (member parent-dir ansible-dirs)
+    ;; Search the molecule directory until two parent directories
+    (if (string= (substring default-directory -6 -1) "tests")
 	(progn
-	  (setq rel-path "../")
-	  (setq molecule-dir "../molecule"))
+	  (setq old-dir default-directory)
+	  (setq default-directory (substring default-directory 0 -23)))
       (progn
-	(setq rel-path "")
-	(setq molecule-dir "molecule")))
-    ;; Execute only if the molecule directory exists
-    (if (file-exists-p molecule-dir)
-	(progn
-	  ;; Exclude . and ..
-	  (setq scenarios (directory-files (expand-file-name molecule-dir) nil
-					   "^\\([^.]\\|\\.[^.]\\|\\.\\..\\)"))
-	  ;; If there's more than one scenario, give an option to choose them
-	  (if (> (length scenarios) 1)
+	(molecule-basedir default-directory)
+	(if (not (file-directory-p "molecule"))
+	    (progn
+	      (setq molecule-dir (molecule-basedir default-directory))
+	      (if (not (file-directory-p (concat molecule-dir "molecule")))
+		  (progn
+		    (setq molecule-dir (molecule-basedir molecule-dir))
+		    (if (not (file-directory-p (concat molecule-dir "molecule")))
+			(user-error "There's no molecule directory! You should execute M-x molecule-init")
+		      (progn
+			(setq old-dir default-directory)
+			(setq default-dirrectory (concat molecule-dir "molecule"))))))
 	      (progn
-		(setq scenarios (cons "all" scenarios))
-		(message scenarios)
-		;; TODO: hacer el ivy-read generico y reusable al menos con ido
-		(setq scenario (concat " -s " (ivy-read "Choose a scenario: "
-							scenarios)))))
-	  (setq default-directory (concat default-directory rel-path))
-	  (compile (concat molecule-command " " debug command scenario))
-	  (setq default-directory old-dir))
-      (message "There's no scenarios! You should execute M-x molecule-init"))))
+		(setq old-dir default-directory)
+		(setq default-directory molecule-dir)))
+	  (setq old-dir default-directory))))
+    ;; Exclude . and ..
+    (setq scenarios (directory-files (expand-file-name
+				      (concat default-directory "molecule"))
+				     nil
+				     "^\\([^.]\\|\\.[^.]\\|\\.\\..\\)"))
+    ;; If there's more than one scenario, give an option to choose them
+    (if (> (length scenarios) 1)
+	(progn
+	  (setq scenarios (cons "all" scenarios))
+	  ;; TODO: hacer el ivy-read generico y reusable al menos con ido
+	  (setq scenario (concat " -s " (ivy-read "Choose a scenario: "
+						  scenarios))))
+      (if (= (length scenarios) 1)
+	  (setq scenario "")
+	(user-error "There's no scenarios! You should execute M-x molecule-init")))
+    (compile (concat molecule-command " " debug command scenario))
+    (setq default-directory old-dir)))
 
 ;;;###autoload
 (defalias 'molecule-check (lambda()
