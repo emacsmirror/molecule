@@ -85,6 +85,7 @@ ee it if it's on the PATH."
     (message "Molecule finished!")))
 
 (defun molecule-basedir (directory)
+  "Molecule function which helps to manage directories names."
   (file-name-directory (replace-regexp-in-string
 			(concat
 			 (file-name-nondirectory
@@ -148,9 +149,9 @@ ee it if it's on the PATH."
 
 ;;;###autoload
 (defalias 'molecule-check (lambda()
-			       "Execute molecule converge."
-			       (interactive)
-			       (funcall 'molecule--wrapper "check")))
+			    "Execute molecule converge."
+			    (interactive)
+			    (funcall 'molecule--wrapper "check")))
 
 ;;;###autoload
 (defalias 'molecule-converge (lambda()
@@ -160,63 +161,64 @@ ee it if it's on the PATH."
 
 ;;;###autoload
 (defalias 'molecule-create (lambda()
-			       "Execute molecule create."
-			       (interactive)
-			       (funcall 'molecule--wrapper "create")))
+			     "Execute molecule create."
+			     (interactive)
+			     (funcall 'molecule--wrapper "create")))
 
 ;;;###autoload
 (defalias 'molecule-dependency (lambda()
-			       "Execute molecule dependency."
-			       (interactive)
-			       (funcall 'molecule--wrapper "dependency")))
+				 "Execute molecule dependency."
+				 (interactive)
+				 (funcall 'molecule--wrapper "dependency")))
 
 ;;;###autoload
 (defalias 'molecule-destroy (lambda()
-			       "Execute molecule destroy."
-			       (interactive)
-			       (funcall 'molecule--wrapper "destroy")))
+			      "Execute molecule destroy."
+			      (interactive)
+			      (funcall 'molecule--wrapper "destroy")))
 
 ;;;###autoload
 (defalias 'molecule-idempotence (lambda()
-			       "Execute molecule idempotence."
-			       (interactive)
-			       (funcall 'molecule--wrapper "idempotence")))
+				  "Execute molecule idempotence."
+				  (interactive)
+				  (funcall 'molecule--wrapper "idempotence")))
 
 ;;;###autoload
 (defalias 'molecule-lint (lambda()
-			       "Execute molecule lint."
-			       (interactive)
-			       (funcall 'molecule--wrapper "lint")))
+			   "Execute molecule lint."
+			   (interactive)
+			   (funcall 'molecule--wrapper "lint")))
 
 ;;;###autoload
 (defalias 'molecule-list (lambda()
-			       "Execute molecule list."
-			       (interactive)
-			       (funcall 'molecule--wrapper "list")))
+			   "Execute molecule list."
+			   (interactive)
+			   (funcall 'molecule--wrapper "list")))
 
 ;;;###autoload
 (defalias 'molecule-side-effect (lambda()
-			       "Execute molecule side."
-			       (interactive)
-			       (funcall 'molecule--wrapper "side-effect")))
+				  "Execute molecule side."
+				  (interactive)
+				  (funcall 'molecule--wrapper "side-effect")))
 
 ;;;###autoload
 (defalias 'molecule-syntax (lambda()
-			       "Execute molecule syntax."
-			       (interactive)
-			       (funcall 'molecule--wrapper "syntax")))
+			     "Execute molecule syntax."
+			     (interactive)
+			     (funcall 'molecule--wrapper "syntax")))
 
 ;;;###autoload
 (defalias 'molecule-test (lambda()
-			       "Execute molecule test."
-			       (interactive)
-			       (funcall 'molecule--wrapper "test")))
+			   "Execute molecule test."
+			   (interactive)
+			   (funcall 'molecule--wrapper "test")))
 
 ;;;###autoload
 (defalias 'molecule-verify (lambda()
-			       "Execute molecule verify."
-			       (interactive)
-			       (funcall 'molecule--wrapper "verify")))
+			     "Execute molecule verify."
+			     (interactive)
+			     (funcall 'molecule--wrapper "verify")))
+
 
 ;;;###autoload
 (defun molecule-version ()
