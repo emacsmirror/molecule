@@ -228,8 +228,8 @@ ee it if it's on the PATH."
 	  (setq output (shell-command-to-string
 			(concat molecule-command " --version")))
 	  (setq output (concat output "molecule.el v0.1"))
-	  (setq molecule-version-v result))
-      (message molecule-version-v))))
+	  (setq molecule-version-v output)))
+    (message molecule-version-v)))
 
 ;;;###autoload
 (defvar molecule-mode-map
