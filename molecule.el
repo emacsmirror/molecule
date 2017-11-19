@@ -225,10 +225,52 @@ ee it if it's on the PATH."
   (let ((output))
     (if (eq molecule-version-v nil)
 	(progn
-	  (setq output (shell-command-to-string (concat molecule-command " --version")))
+	  (setq output (shell-command-to-string
+			(concat molecule-command " --version")))
 	  (setq output (concat output "molecule.el v0.1"))
 	  (setq molecule-version-v result))
       (message molecule-version-v))))
+
+;;;###autoload
+(defvar molecule-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "C-x m c") #'molecule-check)
+    (define-key map (kbd "C-x m o") #'molecule-converge)
+    (define-key map (kbd "C-x m r") #'molecule-create)
+    (define-key map (kbd "C-x m d") #'molecule-dependency)
+    (define-key map (kbd "C-x m e") #'molecule-destroy)
+    (define-key map (kbd "C-x m i") #'molecule-idempotence)
+    (define-key map (kbd "C-x m n") #'molecule-init)
+    (define-key map (kbd "C-x m l") #'molecule-lint)
+    (define-key map (kbd "C-x m s") #'molecule-list)
+    (define-key map (kbd "C-x m f") #'molecule-side-effect)
+    (define-key map (kbd "C-x m y") #'molecule-syntax)
+    (define-key map (kbd "C-x m t") #'molecule-test)
+    (define-key map (kbd "C-x m v") #'molecule-verify)
+    map)
+  "Keymap for `molecule-mode'.")
+
+;;;###autoload
+(define-minor-mode molecule-mode
+  "Minor mode for molecule wrapper.
+
+When called interactively, toggle `molecule-mode'.  With
+prefix ARG, enable `molecule-mode' if ARG is positive,
+otherwise disable it.
+
+When called from Lisp, enable `molecule-mode' if ARG is
+omitted, nil or positive.  If ARG is `toggle', toggle
+`molecule-mode'.  Otherwise behave as if called interactively.
+
+In `molecule-mode' provide the following keybindings for
+molecule testing:
+
+\\{molecule-mode-map}"
+  :init-value nil
+  :keymap molecule-mode-map
+  :lighter " ADoc"
+  :group 'molecule.el
+  :require 'molecule.el)
 
 (provide 'molecule)
 
