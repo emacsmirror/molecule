@@ -39,7 +39,7 @@ ee it if it's on the PATH."
 (defvar molecule-buffer-name-v "*molecule*"
   "Molecule buffer name.  It shouldn't be necessary to modify it.")
 
-(defcustom molecule-debug nil
+(defcustom molecule-debug-v nil
   "If set to t, it will use the --debug flag."
   :type 'variable
   :group 'molecule)
@@ -56,7 +56,7 @@ ee it if it's on the PATH."
 	(molecule-parameter)
 	(debug))
     ;; Set debug
-    (if (eq molecule-debug t)
+    (if (eq molecule-debug-v t)
 	(setq debug "--debug ")
       (setq debug ""))
     ;; Choose scenario or role
@@ -104,7 +104,7 @@ ee it if it's on the PATH."
 	(scenarios)
 	(old-dir))
     ;; Set debug
-    (if (eq molecule-debug t)
+    (if (eq molecule-debug-v t)
 	(setq debug "--debug ")
       (setq debug ""))
     ;; Search the molecule directory until two parent directories
@@ -232,6 +232,14 @@ ee it if it's on the PATH."
 	  (setq output (concat output "molecule.el v0.1"))
 	  (setq molecule-version-v output)))
     (message molecule-version-v)))
+
+;;;###autoload
+(defun molecule-debug ()
+  "Toggle molecule debug."
+  (interactive)
+  (if (eq molecule-debug-v nil)
+      (setq molecule-debug-v t)
+    (setq molecule-debug-v nil)))
 
 ;;;###autoload
 (defvar molecule-mode-map
