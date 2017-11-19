@@ -7,7 +7,7 @@
 ;; Version: 0.1
 
 ;; Keywords:: languages terminals
-;; X-URL:: https://git.daemons.it/drymer/molecule.el
+;; Homepage: https://git.daemons.it/drymer/molecule.el
 
 ;; This program is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -22,17 +22,16 @@
 
 ;;; Commentary:
 ;; If you find a bug, you may send an e-mail to drymer [ AT ] autistici.org
-;;; or open an issue at https://git.daemons.it/drymer/molecule.el
+;; or open an issue at https://git.daemons.it/drymer/molecule.el
 
 ;;; Code:
-
 (defgroup molecule nil
   "Wrapper around molecule command."
   :group 'tools)
 
 (defcustom molecule-command "molecule"
-  "The molecule command (no shit, Sherlock).  It shouldn't be necessary to chan\
-ee it if it's on the PATH."
+  "The molecule command (no shit, Sherlock).  It shouldn't be necessary to cha\
+nge it if it's on the PATH."
   :type 'variable
   :group 'molecule)
 
@@ -61,8 +60,9 @@ ee it if it's on the PATH."
       (setq debug ""))
     ;; Choose scenario or role
     (setq molecule-parameter
-	  (ivy-read "Choose between \"role\" or \"scenario\": " (list "scenario"
-								      "role")))
+	  (ivy-read "Choose between \"role\" or \"scenario\": " (list
+								 "scenario"
+								 "role")))
     ;; If scenario, choose scenario-name and set role-name automatically
     (if (string= molecule-parameter "scenario")
 	(progn
@@ -71,7 +71,8 @@ ee it if it's on the PATH."
 					   (file-name-directory
 					    default-directory)))))
 	  (setq scenario-name
-		(read-string "Scenario name (leave it empty to use the \"default\"): "))
+		(read-string "Scenario name (leave it empty to use the \"defau\
+lt\"): "))
 	  (if (string= scenario-name "")
 	      (setq scenario-name "default")))
       (setq role-name (concat " -r " (read-string "Role name: "))))
@@ -81,11 +82,18 @@ ee it if it's on the PATH."
       (setq scenario-name (concat " -s" scenario-name)))
     ;; Execute molecule
     (start-process molecule-buffer-name-v molecule-buffer-name-v "sh" "-c"
-		   (concat molecule-command " init " debug molecule-parameter scenario-name role-name))
+		   (concat
+		    molecule-command
+		    " init "
+		    debug
+		    molecule-parameter
+		    scenario-name
+		    role-name))
     (message "Molecule finished!")))
 
 (defun molecule-basedir (directory)
-  "Molecule function which helps to manage directories names."
+  "Molecule function which helps to manage directories names.
+Argument DIRECTORY A directory path."
   (file-name-directory (replace-regexp-in-string
 			(concat
 			 (file-name-nondirectory
@@ -121,10 +129,12 @@ ee it if it's on the PATH."
 		  (progn
 		    (setq molecule-dir (molecule-basedir molecule-dir))
 		    (if (not (file-directory-p (concat molecule-dir "molecule")))
-			(user-error "There's no molecule directory! You should execute M-x molecule-init")
+			(user-error "There's no molecule directory! You should\
+ execute M-x molecule-init")
 		      (progn
 			(setq old-dir default-directory)
-			(setq default-dirrectory (concat molecule-dir "molecule"))))))
+			(setq default-dirrectory
+			      (concat molecule-dir "molecule"))))))
 	      (progn
 		(setq old-dir default-directory)
 		(setq default-directory molecule-dir)))
@@ -143,7 +153,8 @@ ee it if it's on the PATH."
 						  scenarios))))
       (if (= (length scenarios) 1)
 	  (setq scenario "")
-	(user-error "There's no scenarios! You should execute M-x molecule-init")))
+	(user-error "There's no scenarios! You should execute M-x molecule-ini\
+t")))
     (compile (concat molecule-command " " debug command scenario))
     (setq default-directory old-dir)))
 
@@ -259,7 +270,7 @@ ee it if it's on the PATH."
     (define-key map (kbd "C-x m v") #'molecule-verify)
     (define-key map (kbd "C-x m b") #'molecule-debug)
     map)
-  "Keymap for `molecule-mode'.")
+  "Keymap for all `molecule-mode' functions.")
 
 ;;;###autoload
 (define-minor-mode molecule-mode
