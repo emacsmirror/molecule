@@ -257,6 +257,7 @@ ee it if it's on the PATH."
     (define-key map (kbd "C-x m y") #'molecule-syntax)
     (define-key map (kbd "C-x m t") #'molecule-test)
     (define-key map (kbd "C-x m v") #'molecule-verify)
+    (define-key map (kbd "C-x m b") #'molecule-debug)
     map)
   "Keymap for `molecule-mode'.")
 

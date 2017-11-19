@@ -7,7 +7,7 @@ Molecule is a testing framework for ansible roles. If you don't know what it is,
 *** Requirements
 
 #+BEGIN_SRC bash
-sudo pip3 install molecule docker-py
+sudo pip install molecule docker-py
 #+END_SRC
 
 *** Install
@@ -25,41 +25,44 @@ A minimal configuration would be this.
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/lisp/molecule.el/")
 (require 'molecule)
+(add-hook 'yaml-mode-hook #'molecule-mode)
 #+END_SRC
 
 For a more advanced configuration check the next chapter.
 *** Advanced usage
 **** Main commands:
-- =molecule-init=: Initialize a new role or scenario.
+- =molecule-init=: Initialize a new role or scenario. Binded to =C-x m n=.
 
-- =molecule-check=: Use the provisioner to perform a Dry-Run...
+- =molecule-check=: Use the provisioner to perform a Dry-Run. Binded to =C-x m c=.
 
-- =molecule-converge=: Use the provisioner to configure instances...
+- =molecule-converge=: Use the provisioner to configure instances. Binded to =C-x m o=.
 
-- =molecule-create=: Start instances.
+- =molecule-create=: Start instances. Binded to =C-x m r=.
 
-- =molecule-dependency=: Mange the role's dependencies.
+- =molecule-dependency=: Mange the role's dependencies. Binded to =C-x m d=.
 
-- =molecule-destroy=: Destroy instances.
+- =molecule-destroy=: Destroy instances. Binded to =C-x m e=.
 
-- =molecule-idempotence=:  Use the provisioner to configure the...
+- =molecule-idempotence=:  Do an idempotency test. Binded to =C-x m i=.
 
-- =molecule-lint=: Lint the role.
+- =molecule-lint=: Lint the role. Binded to =C-x m l=.
 
-- =molecule-list=: Lists status of instances.
+- =molecule-list=: Lists status of instances. Binded to =C-x m s=.
 
-- =molecule-syntax=: Use the provisioner to syntax check the role.
+- =molecule-syntax=: Use the provisioner to syntax check the role. Binded to =C-x m y=.
 
-- =molecule-side-effect=: Use the provisioner to perform side-effects...
+- =molecule-side-effect=: Use the provisioner to perform side-effects tests. Binded to =C-x m f=.
 
-- =molecule-test=: Test (destroy, create, converge, lint,...
+- =molecule-test=: Test (destroy, create, converge, lint, ...) Binded to =C-x m t=.
 
-- =molecule-verify=: Run automated tests against instances.
+- =molecule-verify=: Run automated tests against instances. Binded to =C-x m v=.
+
+- =molecule-debug=: Toggle debug on or off. Binded to =C-x m b=.
 
 **** Variables:
 - =molecule-command=: It uses molecule in the path by default.
 
-- =molecule-debug=: If set to =t=, it will pass the =--debug= flag to molecule. Set to nil by default.
+- =molecule-debug-v=: If set to =t=, it will pass the =--debug= flag to molecule. Set to nil by default.
 
 *** License
 #+BEGIN_SRC text
@@ -106,41 +109,44 @@ Una configuración minimalista sería la siguiente.
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/lisp/molecule.el/")
 (require 'molecule)
+(add-hook 'yaml-mode-hook #'molecule-mode)
 #+END_SRC
 
 Para una configuración más avanzada se puede consultar la sección siguiente.
 *** Uso avanzado
 **** Comandos principales:
-- =molecule-init=: Inicializa un nuevo rol o escenario.
+- =molecule-init=: Inicializa un nuevo rol o escenario. Asignado a =C-x m n=.
 
-- =molecule-check=: Usa el provisionador para realizar una ejecución simulada...
+- =molecule-check=: Usa el provisionador para realizar una ejecución simulada... Asignado a =C-x m c=.
 
-- =molecule-converge=: Usr el provisionador para configurar instancias...
+- =molecule-converge=: Usr el provisionador para configurar instancias... Asignado a =C-x m o=.
 
-- =molecule-create=: Empezar instancias.
+- =molecule-create=: Empezar instancias. Asignado a =C-x m r=.
 
-- =molecule-dependency=: Manejar las dependencias del rol.
+- =molecule-dependency=: Manejar las dependencias del rol. Asignado a =C-x m d=.
 
-- =molecule-destroy=: Destruir instancias.
+- =molecule-destroy=: Destruir instancias. Asignado a =C-x m e=.
 
-- =molecule-idempotence=: Usa el provisionador para configurarlo...
+- =molecule-idempotence=: Usa el provisionador para configurarlo... Asignado a =C-x m i=.
 
-- =molecule-lint=: Pasarle el lint al role.
+- =molecule-lint=: Pasarle el lint al role. Asignado a =C-x m l=.
 
-- =molecule-list=: Lista los estados de las instancias.
+- =molecule-list=: Lista los estados de las instancias. Asignado a =C-x m s=.
 
-- =molecule-syntax=: Usa el provisionador para hacer un checkeo de sintaxis del role.
+- =molecule-syntax=: Usa el provisionador para hacer un checkeo de sintaxis del role. Asignado a =C-x m y=.
 
-- =molecule-side-effect=: Usa el provisionado para ejecutar posibles efectos secundarios.
+- =molecule-side-effect=: Usa el provisionado para ejecutar posibles efectos secundarios. Asignado a =C-x m f=.
 
-- =molecule-test=: Test (destroy, create, converge, lint,...
+- =molecule-test=: Test (destroy, create, converge, lint,... Asignado a =C-x m t=.
 
-- =molecule-verify=: Ejecuta tests automatizados contra algunas instancias.
+- =molecule-verify=: Ejecuta tests automatizados contra algunas instancias. Asignado a =C-x m v=.
+
+- =molecule-debug=: Activar y desactivar el debug. Asignado a =C-x m b=.
 
 **** Variables:
 - =molecule-command=: Usa molecule en el path por defecto.
 
-- =molecule-debug=: Si se establece en =t=, se pasará el parámetro =--debug= a molecule. Establecido en nil por defecto.
+- =molecule-debug-v=: Si se establece en =t=, se pasará el parámetro =--debug= a molecule. Establecido en nil por defecto.
 
 *** Licencia
 #+BEGIN_SRC text
