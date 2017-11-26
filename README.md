@@ -34,6 +34,8 @@
 
 
 <a id="orge599f72"></a>
+        6.  [compile-mode](#org130f39d)
+        6.  [compile-mode](#org4143eb8)
 
 # molecule.el
 
@@ -123,6 +125,24 @@ For a more advanced configuration check the next chapter.
 
 
 <a id="org69992bf"></a>
+
+### compile-mode
+
+Molecule uses `compile-mode` to execute molecule. By default it's a shitty, so you may add auto-scroll, colors support and bind the `recompile` function to `C-,`:
+
+    ;; Source: https://stackoverflow.com/questions/13397737/ansi-coloring-in-compilation-mode
+    (use-package compile
+      :config
+      (defun colorize-compilation-buffer ()
+        (let ((inhibit-read-only t))
+          (ansi-color-apply-on-region (point-min) (point-max))))
+      (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+      (setq compilation-scroll-output t)
+      :bind (
+    	 ("C-," . recompile)))
+
+
+<a id="org1425752"></a>
 
 ### License
 
@@ -235,6 +255,24 @@ Para una configuración más avanzada se puede consultar la sección siguiente.
 
 
 <a id="orgb2fdc8f"></a>
+
+### compile-mode
+
+Molecule usa `compile-mode` para ejecutar molecule. Por defecto es bastante mierdoso, así que igual es interesante añadirle auto-scroll, soporte de colores y asignar la función de `recompile` al atajo de teclado `C-,`:
+
+    ;; Source: https://stackoverflow.com/questions/13397737/ansi-coloring-in-compilation-mode
+    (use-package compile
+      :config
+      (defun colorize-compilation-buffer ()
+        (let ((inhibit-read-only t))
+          (ansi-color-apply-on-region (point-min) (point-max))))
+      (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+      (setq compilation-scroll-output t)
+      :bind (
+    	 ("C-," . recompile)))
+
+
+<a id="org91aafae"></a>
 
 ### Licencia
 
