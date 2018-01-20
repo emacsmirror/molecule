@@ -93,7 +93,6 @@ Argument DIRECTORY A directory path."
 				  (file-name-directory directory))) "/$") ""
 				  directory)))
 
-;; meterle shell-quote-argument
 (defun molecule--wrapper (command)
   "Molecule generic `COMMAND' wrapper."
   (let (;; Set debug
@@ -107,11 +106,12 @@ Argument DIRECTORY A directory path."
 	(molecule-dir))
     ;; If there's more than one scenario, give an option to choose them
     (if (> (length scenarios) 1)
-	    (progn
-	      (setq scenarios (cons "all" scenarios))
-	      (setq scenario (concat " -s " (completing-read
-					     "Choose a scenario: "
-					     scenarios))))
+	(progn
+	  (setq scenarios (cons "all" scenarios))
+	  (setq scenario (concat " -s " (shell-quote-argument
+					 (completing-read
+					  "Choose a scenario: "
+					  scenarios)))))
       (if (/= (length scenarios) 1)
 	  (user-error "There's no scenarios! You should execute M-x molecule-"\
 		      "init")))
