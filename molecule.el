@@ -97,27 +97,14 @@ Argument DIRECTORY A directory path."
   "Molecule generic `COMMAND' wrapper."
   (let (;; Set debug
 	(debug (if (eq molecule-debug-v t) "--debug " ""))
-	;; Exclude . and ..
-	(scenarios (directory-files (expand-file-name
-				     (concat default-directory "molecule")) nil
-				     "^\\([^.]\\|\\.[^.]\\|\\.\\..\\)"))
 	(old-dir)
 	(scenario)
+	(scenarios)
 	(molecule-dir))
-    ;; If there's more than one scenario, give an option to choose them
-    (if (> (length scenarios) 1)
-	(progn
-	  (setq scenarios (cons "all" scenarios))
-	  (setq scenario (concat " -s " (shell-quote-argument
-					 (completing-read
-					  "Choose a scenario: "
-					  scenarios)))))
-      (if (/= (length scenarios) 1)
-	  (user-error "There's no scenarios! You should execute M-x molecule-"\
-		      "init")))
-    ;; Search the molecule direbctory until two parent directories
+    ;; Search the molecule directory until two parent directories
     (if (string= (substring default-directory -6 -1) "tests")
 	(progn
+	  (message "1")
 	  (setq old-dir default-directory)
 	  (setq default-directory (substring default-directory 0 -23)))
       (progn
@@ -139,7 +126,23 @@ Argument DIRECTORY A directory path."
 	      (progn
 		(setq old-dir default-directory)
 		(setq default-directory molecule-dir)))
-	      (setq old-dir default-directory))))
+	  (setq old-dir default-directory))))
+    ;; Exclude . and ..
+    (setq scenarios (directory-files (expand-file-name
+				      (concat default-directory "molecule"))
+				     nil "^\\([^.]\\|\\.[^.]\\|\\.\\..\\)"))
+    ;; If there's more than one scenario, give an option to choose them
+    (if (> (length scenarios) 1)
+	(progn
+	  (setq scenarios (cons "all" scenarios))
+	  (setq scenario (concat " -s " (shell-quote-argument
+					 (completing-read
+					  "Choose a scenario: "
+					  scenarios)))))
+      (if (> (length scenarios) 1)
+	  (user-error "There's no scenarios! You should execute M-x molecule-"\
+		      "init")))
+
     (compile (concat molecule-command " " debug command scenario))
     (setq default-directory old-dir)))
 
