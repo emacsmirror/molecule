@@ -50,72 +50,72 @@ nge it if it's on the PATH."
 (defun molecule-init ()
   "Execute molecule init."
   (interactive)
-  (let ((role-name)
-	(scenario-name)
-	(molecule-parameter)
-	(debug))
-    ;; Set debug
-    (if (eq molecule-debug-v t)
-	(setq debug "--debug ")
-      (setq debug ""))
-    ;; Choose scenario or role
-    (setq molecule-parameter
-	  (ivy-read "Choose between \"role\" or \"scenario\": " (list
-								 "scenario"
-								 "role")))
-    ;; If scenario, choose scenario-name and set role-name automatically
-    (if (string= molecule-parameter "scenario")
-	(progn
-	  (setq role-name (concat " -r " (file-name-nondirectory
-					  (directory-file-name
-					   (file-name-directory
-					    default-directory)))))
-	  (setq scenario-name
-		(read-string "Scenario name (leave it empty to use the \"defau\
-lt\"): "))
-	  (if (string= scenario-name "")
-	      (setq scenario-name "default")))
-      (setq role-name (concat " -r " (read-string "Role name: "))))
-    (setq molecule-parameter (concat molecule-parameter " "))
-    (if (boundp 'scenario-name)
-	(setq scenario-name "")
-      (setq scenario-name (concat " -s" scenario-name)))
-    ;; Execute molecule
-    (start-process molecule-buffer-name-v molecule-buffer-name-v "sh" "-c"
-		   (concat
-		    molecule-command
-		    " init "
-		    debug
-		    molecule-parameter
-		    scenario-name
-		    role-name))
-    (message "Molecule finished!")))
+  (let* (;; Choose scenario or role
+	 (molecule-parameter (completing-read "Choose: " (list "scenario"
+							       "role")))
+	 ;; If scenario, choose scenario name and set role name automatically,
+	 ;; if not ask
+	 (scenario-name (if (string= molecule-parameter "scenario")
+			    (concat " -s " (shell-quote-argument
+					    (read-string "Scenario name: ")))))
+	 (role-name (if (string= molecule-parameter "role")
+	 		(shell-quote-argument (read-string "Role name: "))
+		      (progn
+			(if dired-directory
+			    (shell-quote-argument (file-name-nondirectory
+						   (directory-file-name
+						    (file-name-directory
+						     dired-directory))))
+			  (shell-quote-argument (file-name-nondirectory
+						 (directory-file-name
+						  (file-name-directory
+						   default-directory))))))))
+	 ;; Set molecule driver
+	 (molecule-driver (completing-read "Choose a driver: "
+					   (list "azure" "docker" "ec2" "gce"
+						 "lxc" "lxd" "openstack"
+						 "vagrant")))
+	 ;; Set molecule verifier
+	 (molecule-verifier (completing-read "Choose a verifier: "
+					     (list "testinfra" "goss")))
+	 ;; Set debug
+	 (debug (if molecule-debug-v " --debug" "")))
+    (compile (concat molecule-command  debug " init " molecule-parameter " -r "
+		     role-name " -d " molecule-driver " --verifier-name "
+		     molecule-verifier scenario-name))))
 
 (defun molecule-basedir (directory)
   "Molecule function which helps to manage directories names.
 Argument DIRECTORY A directory path."
   (file-name-directory (replace-regexp-in-string
-			(concat
-			 (file-name-nondirectory
-			  (directory-file-name
-			   (file-name-directory directory)
-			   ))
-			 "/$")
-			""
-			directory)))
+			(concat (file-name-nondirectory
+				 (directory-file-name
+				  (file-name-directory directory))) "/$") ""
+				  directory)))
 
+;; meterle shell-quote-argument
 (defun molecule--wrapper (command)
   "Molecule generic `COMMAND' wrapper."
-  (let ((debug)
+  (let (;; Set debug
+	(debug (if (eq molecule-debug-v t) "--debug " ""))
+	;; Exclude . and ..
+	(scenarios (directory-files (expand-file-name
+				     (concat default-directory "molecule")) nil
+				     "^\\([^.]\\|\\.[^.]\\|\\.\\..\\)"))
+	(old-dir)
 	(scenario)
-	(molecule-dir)
-	(scenarios)
-	(old-dir))
-    ;; Set debug
-    (if (eq molecule-debug-v t)
-	(setq debug "--debug ")
-      (setq debug ""))
-    ;; Search the molecule directory until two parent directories
+	(molecule-dir))
+    ;; If there's more than one scenario, give an option to choose them
+    (if (> (length scenarios) 1)
+	    (progn
+	      (setq scenarios (cons "all" scenarios))
+	      (setq scenario (concat " -s " (completing-read
+					     "Choose a scenario: "
+					     scenarios))))
+      (if (/= (length scenarios) 1)
+	  (user-error "There's no scenarios! You should execute M-x molecule-"\
+		      "init")))
+    ;; Search the molecule direbctory until two parent directories
     (if (string= (substring default-directory -6 -1) "tests")
 	(progn
 	  (setq old-dir default-directory)
@@ -128,7 +128,8 @@ Argument DIRECTORY A directory path."
 	      (if (not (file-directory-p (concat molecule-dir "molecule")))
 		  (progn
 		    (setq molecule-dir (molecule-basedir molecule-dir))
-		    (if (not (file-directory-p (concat molecule-dir "molecule")))
+		    (if (not (file-directory-p (concat molecule-dir
+						       "molecule")))
 			(user-error "There's no molecule directory! You should\
  execute M-x molecule-init")
 		      (progn
@@ -138,97 +139,81 @@ Argument DIRECTORY A directory path."
 	      (progn
 		(setq old-dir default-directory)
 		(setq default-directory molecule-dir)))
-	  (setq old-dir default-directory))))
-    ;; Exclude . and ..
-    (setq scenarios (directory-files (expand-file-name
-				      (concat default-directory "molecule"))
-				     nil
-				     "^\\([^.]\\|\\.[^.]\\|\\.\\..\\)"))
-    ;; If there's more than one scenario, give an option to choose them
-    (if (> (length scenarios) 1)
-	(progn
-	  (setq scenarios (cons "all" scenarios))
-	  ;; TODO: hacer el ivy-read generico y reusable al menos con ido
-	  (setq scenario (concat " -s " (ivy-read "Choose a scenario: "
-						  scenarios))))
-      (if (= (length scenarios) 1)
-	  (setq scenario "")
-	(user-error "There's no scenarios! You should execute M-x molecule-ini\
-t")))
+	      (setq old-dir default-directory))))
     (compile (concat molecule-command " " debug command scenario))
     (setq default-directory old-dir)))
 
 ;;;###autoload
-(defalias 'molecule-check (lambda()
-			    "Execute molecule converge."
-			    (interactive)
-			    (funcall 'molecule--wrapper "check")))
+(defun molecule-check ()
+  "Execute molecule converge."
+  (interactive)
+  (funcall 'molecule--wrapper "check"))
 
 ;;;###autoload
-(defalias 'molecule-converge (lambda()
-			       "Execute molecule converge."
-			       (interactive)
-			       (funcall 'molecule--wrapper "converge")))
+(defun molecule-converge ()
+  "Execute molecule converge."
+  (interactive)
+  (funcall 'molecule--wrapper "converge"))
 
 ;;;###autoload
-(defalias 'molecule-create (lambda()
-			     "Execute molecule create."
-			     (interactive)
-			     (funcall 'molecule--wrapper "create")))
+(defun molecule-create ()
+  "Execute molecule create."
+  (interactive)
+  (funcall 'molecule--wrapper "create"))
 
 ;;;###autoload
-(defalias 'molecule-dependency (lambda()
-				 "Execute molecule dependency."
-				 (interactive)
-				 (funcall 'molecule--wrapper "dependency")))
+(defun molecule-dependency ()
+  "Execute molecule dependency."
+  (interactive)
+  (funcall 'molecule--wrapper "dependency"))
 
 ;;;###autoload
-(defalias 'molecule-destroy (lambda()
-			      "Execute molecule destroy."
-			      (interactive)
-			      (funcall 'molecule--wrapper "destroy")))
+(defun molecule-destroy ()
+  "Execute molecule destroy."
+  (interactive)
+  (funcall 'molecule--wrapper "destroy"))
 
 ;;;###autoload
-(defalias 'molecule-idempotence (lambda()
-				  "Execute molecule idempotence."
-				  (interactive)
-				  (funcall 'molecule--wrapper "idempotence")))
+(defun molecule-idempotence ()
+  "Execute molecule idempotence."
+  (interactive)
+  (funcall 'molecule--wrapper "idempotence"))
 
 ;;;###autoload
-(defalias 'molecule-lint (lambda()
-			   "Execute molecule lint."
-			   (interactive)
-			   (funcall 'molecule--wrapper "lint")))
+(defun molecule-lint ()
+  "Execute molecule lint."
+  (interactive)
+  (funcall 'molecule--wrapper "lint"))
 
 ;;;###autoload
-(defalias 'molecule-list (lambda()
-			   "Execute molecule list."
-			   (interactive)
-			   (funcall 'molecule--wrapper "list")))
+(defun molecule-list ()
+  "Execute molecule list."
+  (interactive)
+  (funcall 'molecule--wrapper "list"))
 
 ;;;###autoload
-(defalias 'molecule-side-effect (lambda()
-				  "Execute molecule side."
-				  (interactive)
-				  (funcall 'molecule--wrapper "side-effect")))
+(defun molecule-side-effect ()
+  "Execute molecule side."
+  (interactive)
+  (funcall 'molecule--wrapper "side-effect"))
 
 ;;;###autoload
-(defalias 'molecule-syntax (lambda()
-			     "Execute molecule syntax."
-			     (interactive)
-			     (funcall 'molecule--wrapper "syntax")))
+(defun molecule-syntax ()
+  "Execute molecule syntax."
+  (interactive)
+  (funcall 'molecule--wrapper "syntax"))
 
 ;;;###autoload
-(defalias 'molecule-test (lambda()
-			   "Execute molecule test."
-			   (interactive)
-			   (funcall 'molecule--wrapper "test")))
+(defun molecule-test ()
+  "Execute molecule test."
+  (interactive)
+  (funcall 'molecule--wrapper "test"))
 
 ;;;###autoload
-(defalias 'molecule-verify (lambda()
-			     "Execute molecule verify."
-			     (interactive)
-			     (funcall 'molecule--wrapper "verify")))
+(defun molecule-verify ()
+  "Execute molecule verify."
+  (interactive)
+  (funcall 'molecule--wrapper "verify"))
 
 
 ;;;###autoload
@@ -245,32 +230,12 @@ t")))
     (message molecule-version-v)))
 
 ;;;###autoload
-(defun molecule-debug ()
+(defun molecule-toggle-debug ()
   "Toggle molecule debug."
   (interactive)
   (if (eq molecule-debug-v nil)
       (setq molecule-debug-v t)
     (setq molecule-debug-v nil)))
-
-;;;###autoload
-(defvar molecule-mode-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map (kbd "C-x m c") #'molecule-check)
-    (define-key map (kbd "C-x m o") #'molecule-converge)
-    (define-key map (kbd "C-x m r") #'molecule-create)
-    (define-key map (kbd "C-x m d") #'molecule-dependency)
-    (define-key map (kbd "C-x m e") #'molecule-destroy)
-    (define-key map (kbd "C-x m i") #'molecule-idempotence)
-    (define-key map (kbd "C-x m n") #'molecule-init)
-    (define-key map (kbd "C-x m l") #'molecule-lint)
-    (define-key map (kbd "C-x m s") #'molecule-list)
-    (define-key map (kbd "C-x m f") #'molecule-side-effect)
-    (define-key map (kbd "C-x m y") #'molecule-syntax)
-    (define-key map (kbd "C-x m t") #'molecule-test)
-    (define-key map (kbd "C-x m v") #'molecule-verify)
-    (define-key map (kbd "C-x m b") #'molecule-debug)
-    map)
-  "Keymap for all `molecule-mode' functions.")
 
 ;;;###autoload
 (define-minor-mode molecule-mode
@@ -290,10 +255,10 @@ molecule testing:
 \\{molecule-mode-map}"
   :init-value nil
   :keymap molecule-mode-map
-  :lighter " ADoc"
-  :group 'molecule.el
-  :require 'molecule.el)
+  :lighter " Mol"
+  :group 'molecule
+  :require 'molecule)
 
 (provide 'molecule)
 
-;;; molecule.el ends here
+;;; molecule ends here
