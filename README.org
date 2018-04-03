@@ -31,33 +31,33 @@ A minimal configuration would be this.
 For a more advanced configuration check the next chapter.
 *** Advanced usage
 **** Main commands:
-- =molecule-init=: Initialize a new role or scenario. Binded to =C-x m n=.
+- =molecule-init=: Initialize a new role or scenario.
 
-- =molecule-check=: Use the provisioner to perform a Dry-Run. Binded to =C-x m c=.
+- =molecule-check=: Use the provisioner to perform a Dry-Run.
 
-- =molecule-converge=: Use the provisioner to configure instances. Binded to =C-x m o=.
+- =molecule-converge=: Use the provisioner to configure instances.
 
-- =molecule-create=: Start instances. Binded to =C-x m r=.
+- =molecule-create=: Start instances.
 
-- =molecule-dependency=: Mange the role's dependencies. Binded to =C-x m d=.
+- =molecule-dependency=: Mange the role's dependencies.
 
-- =molecule-destroy=: Destroy instances. Binded to =C-x m e=.
+- =molecule-destroy=: Destroy instances.
 
-- =molecule-idempotence=:  Do an idempotency test. Binded to =C-x m i=.
+- =molecule-idempotence=:  Do an idempotency test.
 
-- =molecule-lint=: Lint the role. Binded to =C-x m l=.
+- =molecule-lint=: Lint the role.
 
-- =molecule-list=: Lists status of instances. Binded to =C-x m s=.
+- =molecule-list=: Lists status of instances.
 
-- =molecule-syntax=: Use the provisioner to syntax check the role. Binded to =C-x m y=.
+- =molecule-syntax=: Use the provisioner to syntax check the role.
 
-- =molecule-side-effect=: Use the provisioner to perform side-effects tests. Binded to =C-x m f=.
+- =molecule-side-effect=: Use the provisioner to perform side-effects tests.
 
-- =molecule-test=: Test (destroy, create, converge, lint, ...) Binded to =C-x m t=.
+- =molecule-test=: Test (destroy, create, converge, lint, ...)
 
-- =molecule-verify=: Run automated tests against instances. Binded to =C-x m v=.
+- =molecule-verify=: Run automated tests against instances.
 
-- =molecule-debug=: Toggle debug on or off. Binded to =C-x m b=.
+- =molecule-debug=: Toggle debug on or off.
 
 **** Variables:
 - =molecule-command=: It uses molecule in the path by default.
@@ -131,33 +131,33 @@ Una configuración minimalista sería la siguiente.
 Para una configuración más avanzada se puede consultar la sección siguiente.
 *** Uso avanzado
 **** Comandos principales:
-- =molecule-init=: Inicializa un nuevo rol o escenario. Asignado a =C-x m n=.
+- =molecule-init=: Inicializa un nuevo rol o escenario.
 
-- =molecule-check=: Usa el provisionador para realizar una ejecución simulada... Asignado a =C-x m c=.
+- =molecule-check=: Usa el provisionador para realizar una ejecución simulada...
 
-- =molecule-converge=: Usr el provisionador para configurar instancias... Asignado a =C-x m o=.
+- =molecule-converge=: Usr el provisionador para configurar instancias...
 
-- =molecule-create=: Empezar instancias. Asignado a =C-x m r=.
+- =molecule-create=: Empezar instancias.
 
-- =molecule-dependency=: Manejar las dependencias del rol. Asignado a =C-x m d=.
+- =molecule-dependency=: Manejar las dependencias del rol.
 
-- =molecule-destroy=: Destruir instancias. Asignado a =C-x m e=.
+- =molecule-destroy=: Destruir instancias.
 
-- =molecule-idempotence=: Usa el provisionador para configurarlo... Asignado a =C-x m i=.
+- =molecule-idempotence=: Usa el provisionador para configurarlo...
 
-- =molecule-lint=: Pasarle el lint al role. Asignado a =C-x m l=.
+- =molecule-lint=: Pasarle el lint al role.
 
-- =molecule-list=: Lista los estados de las instancias. Asignado a =C-x m s=.
+- =molecule-list=: Lista los estados de las instancias.
 
-- =molecule-syntax=: Usa el provisionador para hacer un checkeo de sintaxis del role. Asignado a =C-x m y=.
+- =molecule-syntax=: Usa el provisionador para hacer un checkeo de sintaxis del role.
 
-- =molecule-side-effect=: Usa el provisionado para ejecutar posibles efectos secundarios. Asignado a =C-x m f=.
+- =molecule-side-effect=: Usa el provisionado para ejecutar posibles efectos secundarios.
 
-- =molecule-test=: Test (destroy, create, converge, lint,... Asignado a =C-x m t=.
+- =molecule-test=: Test (destroy, create, converge, lint,...
 
-- =molecule-verify=: Ejecuta tests automatizados contra algunas instancias. Asignado a =C-x m v=.
+- =molecule-verify=: Ejecuta tests automatizados contra algunas instancias.
 
-- =molecule-debug=: Activar y desactivar el debug. Asignado a =C-x m b=.
+- =molecule-debug=: Activar y desactivar el debug.
 
 **** Variables:
 - =molecule-command=: Usa molecule en el path por defecto.
