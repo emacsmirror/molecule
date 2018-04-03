@@ -64,8 +64,8 @@ For a more advanced configuration check the next chapter.
 
 - =molecule-debug-v=: If set to =t=, it will pass the =--debug= flag to molecule. Set to nil by default.
 
-*** compile-mode
-Molecule uses =compile-mode= to execute molecule. By default it's a shitty, so you may add auto-scroll, colors support and bind the =recompile= function to =C-,=:
+**** compile-mode
+Molecule uses =compile-mode= to execute molecule. By default it's a bit shitty, so you may add auto-scroll, colors and bind the =recompile= function to =C-,=:
 
 #+BEGIN_SRC emacs-lisp
 ;; Source: https://stackoverflow.com/questions/13397737/ansi-coloring-in-compilation-mode
@@ -164,7 +164,7 @@ Para una configuración más avanzada se puede consultar la sección siguiente.
 
 - =molecule-debug-v=: Si se establece en =t=, se pasará el parámetro =--debug= a molecule. Establecido en nil por defecto.
 
-*** compile-mode
+**** compile-mode
 Molecule usa =compile-mode= para ejecutar molecule. Por defecto es bastante mierdoso, así que igual es interesante añadirle auto-scroll, soporte de colores y asignar la función de =recompile= al atajo de teclado =C-,=:
 
 #+BEGIN_SRC emacs-lisp

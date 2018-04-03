@@ -1,65 +1,51 @@
-<div id="table-of-contents">
-<h2>&Iacute;ndice</h2>
-<div id="text-table-of-contents">
-<ul>
-<li><a href="#orge599f72">1. molecule.el</a>
-<ul>
-<li><a href="#org8813eff">1.1. English</a>
-<ul>
-<li><a href="#org42b5ab2">1.1.1. About</a></li>
-<li><a href="#org462719b">1.1.2. Requirements</a></li>
-<li><a href="#org3bbcf3a">1.1.3. Install</a></li>
-<li><a href="#org3960786">1.1.4. Configuration</a></li>
-<li><a href="#orgf250c68">1.1.5. Advanced usage</a></li>
-<li><a href="#org69992bf">1.1.6. License</a></li>
-<li><a href="#org7f88065">1.1.7. Bugs, patches and feature requests</a></li>
-</ul>
-</li>
-<li><a href="#orgde78633">1.2. Castellano</a>
-<ul>
-<li><a href="#orgad4aa9e">1.2.1. Acerca de</a></li>
-<li><a href="#orga8c47d5">1.2.2. Requisitos</a></li>
-<li><a href="#org79a47b9">1.2.3. Instalar</a></li>
-<li><a href="#orgbfa8340">1.2.4. Configuración</a></li>
-<li><a href="#org30a8baf">1.2.5. Uso avanzado</a></li>
-<li><a href="#orgb2fdc8f">1.2.6. Licencia</a></li>
-<li><a href="#org08232a6">1.2.7. Bugs, parches y solicitudes de características</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
+
+# &Iacute;ndice
+
+1.  [molecule.el](#orgc22b3fa)
+    1.  [English](#org1d37bcb)
+        1.  [About](#org19dab99)
+        2.  [Requirements](#org4e6fef8)
+        3.  [Install](#org5ca9a55)
+        4.  [Configuration](#org4765744)
+        5.  [Advanced usage](#orga3aecca)
+        6.  [License](#org185e017)
+        7.  [Bugs, patches and feature requests](#org1031587)
+    2.  [Castellano](#orgefd634c)
+        1.  [Acerca de](#org65dc9a7)
+        2.  [Requisitos](#org0609d13)
+        3.  [Instalar](#orgeba4a95)
+        4.  [Configuración](#org1e93569)
+        5.  [Uso avanzado](#org894510a)
+        6.  [Licencia](#org3e24497)
+        7.  [Bugs, parches y solicitudes de características](#orgc020732)
 
 
-<a id="orge599f72"></a>
-        6.  [compile-mode](#org130f39d)
-        6.  [compile-mode](#org4143eb8)
+
+<a id="orgc22b3fa"></a>
 
 # molecule.el
 
 
-<a id="org8813eff"></a>
+<a id="org1d37bcb"></a>
 
 ## English
 
 
-<a id="org42b5ab2"></a>
+<a id="org19dab99"></a>
 
 ### About
 
 Molecule is a testing framework for ansible roles. If you don't know what it is, you should probably learn about it on [their site](https://readthedocs.org/projects/molecule/) and then come back here. Molecule.el is a simple wrapper around molecule. Right now, it allows you to create roles and scenarios and execute all commands except `login`.
 
 
-<a id="org462719b"></a>
+<a id="org4e6fef8"></a>
 
 ### Requirements
 
     sudo pip install molecule docker-py
 
 
-<a id="org3bbcf3a"></a>
+<a id="org5ca9a55"></a>
 
 ### Install
 
@@ -70,7 +56,7 @@ You can install from Melpa for a stable release or from the git repository, whic
 [![img](http://melpa.org/packages/molecule-badge.svg)](http://melpa.org/#/molecule)
 
 
-<a id="org3960786"></a>
+<a id="org4765744"></a>
 
 ### Configuration
 
@@ -83,7 +69,7 @@ A minimal configuration would be this.
 For a more advanced configuration check the next chapter.
 
 
-<a id="orgf250c68"></a>
+<a id="orga3aecca"></a>
 
 ### Advanced usage
 
@@ -123,26 +109,23 @@ For a more advanced configuration check the next chapter.
 
     -   `molecule-debug-v`: If set to `t`, it will pass the `--debug` flag to molecule. Set to nil by default.
 
+3.  compile-mode
 
-<a id="org69992bf"></a>
+    Molecule uses `compile-mode` to execute molecule. By default it's a bit shitty, so you may add auto-scroll, colors and bind the `recompile` function to `C-,`:
 
-### compile-mode
-
-Molecule uses `compile-mode` to execute molecule. By default it's a shitty, so you may add auto-scroll, colors support and bind the `recompile` function to `C-,`:
-
-    ;; Source: https://stackoverflow.com/questions/13397737/ansi-coloring-in-compilation-mode
-    (use-package compile
-      :config
-      (defun colorize-compilation-buffer ()
-        (let ((inhibit-read-only t))
-          (ansi-color-apply-on-region (point-min) (point-max))))
-      (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
-      (setq compilation-scroll-output t)
-      :bind (
-    	 ("C-," . recompile)))
+        ;; Source: https://stackoverflow.com/questions/13397737/ansi-coloring-in-compilation-mode
+        (use-package compile
+          :config
+          (defun colorize-compilation-buffer ()
+            (let ((inhibit-read-only t))
+              (ansi-color-apply-on-region (point-min) (point-max))))
+          (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+          (setq compilation-scroll-output t)
+          :bind (
+        	 ("C-," . recompile)))
 
 
-<a id="org1425752"></a>
+<a id="org185e017"></a>
 
 ### License
 
@@ -163,33 +146,33 @@ Molecule uses `compile-mode` to execute molecule. By default it's a shitty, so y
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-<a id="org7f88065"></a>
+<a id="org1031587"></a>
 
 ### Bugs, patches and feature requests
 
 If you find a bug, have a patch or have a feature request, you may send an e-mail to the address in the previous section or go to [https://git.daemons.it/drymer/molecule.el/](https://git.daemons.it/drymer/molecule.el/)
 
 
-<a id="orgde78633"></a>
+<a id="orgefd634c"></a>
 
 ## Castellano
 
 
-<a id="orgad4aa9e"></a>
+<a id="org65dc9a7"></a>
 
 ### Acerca de
 
 Molecule es un framework de testeo de roles de ansible. Si no sabes que es, probablemente debas aprender sobre ello en [su página](https://readthedocs.org/projects/molecule/) y luego volver. Molecule.el es un wrapper simple alrededor de molecule. Ahora mismo, permite crear roles y escenarios y ejecutar todas las órdenes excepto `login`.
 
 
-<a id="orga8c47d5"></a>
+<a id="org0609d13"></a>
 
 ### Requisitos
 
     sudo pip install molecule docker-py
 
 
-<a id="org79a47b9"></a>
+<a id="orgeba4a95"></a>
 
 ### Instalar
 
@@ -200,7 +183,7 @@ Se puede instalar desde Melpa para tener una versión estable o desde el reposit
 [![img](http://melpa.org/packages/molecule-badge.svg)](http://melpa.org/#/nikola)
 
 
-<a id="orgbfa8340"></a>
+<a id="org1e93569"></a>
 
 ### Configuración
 
@@ -213,7 +196,7 @@ Una configuración minimalista sería la siguiente.
 Para una configuración más avanzada se puede consultar la sección siguiente.
 
 
-<a id="org30a8baf"></a>
+<a id="org894510a"></a>
 
 ### Uso avanzado
 
@@ -241,7 +224,7 @@ Para una configuración más avanzada se puede consultar la sección siguiente.
 
     -   `molecule-side-effect`: Usa el provisionado para ejecutar posibles efectos secundarios. Asignado a `C-x m f`.
 
-    -   `molecule-test`: Test (destroy, create, converge, lint, ... Asignado a `C-x m t`.
+    -   `molecule-test`: Test (destroy, create, converge, lint,&#x2026; Asignado a `C-x m t`.
 
     -   `molecule-verify`: Ejecuta tests automatizados contra algunas instancias. Asignado a `C-x m v`.
 
@@ -253,26 +236,23 @@ Para una configuración más avanzada se puede consultar la sección siguiente.
 
     -   `molecule-debug-v`: Si se establece en `t`, se pasará el parámetro `--debug` a molecule. Establecido en nil por defecto.
 
+3.  compile-mode
 
-<a id="orgb2fdc8f"></a>
+    Molecule usa `compile-mode` para ejecutar molecule. Por defecto es bastante mierdoso, así que igual es interesante añadirle auto-scroll, soporte de colores y asignar la función de `recompile` al atajo de teclado `C-,`:
 
-### compile-mode
-
-Molecule usa `compile-mode` para ejecutar molecule. Por defecto es bastante mierdoso, así que igual es interesante añadirle auto-scroll, soporte de colores y asignar la función de `recompile` al atajo de teclado `C-,`:
-
-    ;; Source: https://stackoverflow.com/questions/13397737/ansi-coloring-in-compilation-mode
-    (use-package compile
-      :config
-      (defun colorize-compilation-buffer ()
-        (let ((inhibit-read-only t))
-          (ansi-color-apply-on-region (point-min) (point-max))))
-      (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
-      (setq compilation-scroll-output t)
-      :bind (
-    	 ("C-," . recompile)))
+        ;; Source: https://stackoverflow.com/questions/13397737/ansi-coloring-in-compilation-mode
+        (use-package compile
+          :config
+          (defun colorize-compilation-buffer ()
+            (let ((inhibit-read-only t))
+              (ansi-color-apply-on-region (point-min) (point-max))))
+          (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+          (setq compilation-scroll-output t)
+          :bind (
+        	 ("C-," . recompile)))
 
 
-<a id="org91aafae"></a>
+<a id="org3e24497"></a>
 
 ### Licencia
 
@@ -292,7 +272,7 @@ Molecule usa `compile-mode` para ejecutar molecule. Por defecto es bastante mier
     junto con este programa. Si no es así, consulte <http://www.gnu.org/licenses/>.
 
 
-<a id="org08232a6"></a>
+<a id="orgc020732"></a>
 
 ### Bugs, parches y solicitudes de características
 
