@@ -250,14 +250,9 @@ otherwise disable it.
 
 When called from Lisp, enable `molecule-mode' if ARG is
 omitted, nil or positive.  If ARG is `toggle', toggle
-`molecule-mode'.  Otherwise behave as if called interactively.
+`molecule-mode'.  Otherwise behave as if called interactively."
 
-In `molecule-mode' provide the following keybindings for
-molecule testing:
-
-\\{molecule-mode-map}"
   :init-value nil
-  :keymap molecule-mode-map
   :lighter " Mol"
   :group 'molecule
   :require 'molecule)
